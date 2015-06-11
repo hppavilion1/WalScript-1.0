@@ -1,0 +1,1 @@
+python WalScript.py %2

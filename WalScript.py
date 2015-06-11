@@ -63,7 +63,9 @@ def run(script, env={}):
 
         elif c == 'input':
             env[args[0]] = raw_input() #Get raw input
-        
+
+        elif c == 'skip':
+            pass
             
         i+=1
 
