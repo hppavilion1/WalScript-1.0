@@ -10,12 +10,14 @@ class stack(list):
             self.append(x)
         
     def pop(self, count = 1):
+        r=[]
         if len(self) < count:
             raise StackError('Not enough items on stack')
         for x in range(count):
             x = self[-1]
             del self[-1]
-            yield x
+            r.append(x)
+        return r
     
     def dup(self):
         x = self.pop()
@@ -25,24 +27,25 @@ class stack(list):
         self.pop()
 
     def over(self):
-        x = self.pop()
-        y = self.pop()
+        x = self.pop()[0]
+        y = self.pop()[0]
         self.push(y, x, y)
 
     def rot(self):
-        x = self.pop()
-        y = self.pop()
-        z = self.pop()
+        x = self.pop()[0]
+        y = self.pop()[0]
+        z = self.pop()[0]
         self.push(y, x, z)
 
+class expstack(stack):
     def add(self):
-        x = self.pop()
-        y = self.pop()
+        x = self.pop()[0]
+        y = self.pop()[0]
         self.push(x+y)
 
     def sub(self):
-        x = self.pop()
-        y = self.pop()
+        x = self.pop()[0]
+        y = self.pop()[0]
         self.push(x-y)
         
     def mult(self):
@@ -51,15 +54,19 @@ class stack(list):
         self.push(x*y)
         
     def div(self):
-        x = self.pop()
-        y = self.pop()
+        x = self.pop()[0]
+        y = self.pop()[0]
         self.push(x/y)
 
     def mod(self):
-        x = self.pop()
-        y = self.pop()
+        x = self.pop()[0]
+        y = self.pop()[0]
         self.push(x%y)
 
     def negate(self):
-        x = self.pop()
+        x = self.pop()[0]
         self.push(-x)
+
+
+def strstack(stack):
+    pass

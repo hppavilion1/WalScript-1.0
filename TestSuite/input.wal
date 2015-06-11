@@ -1,0 +1,5 @@
+var}name}0};
+print}Hi, world!\nName?: };
+input}name};
+print}Hello, }`#name#}!};
+return};

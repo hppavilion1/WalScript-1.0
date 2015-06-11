@@ -8,8 +8,8 @@ def lexexp(s):
     return s.split()
 
 def evalarg(exp, env):
-    s = stack()
     if exp['TYPE'] == 'exp':
+        s = expstack()
         exp = lexexp(exp['ARG'])
 
         for x in exp:
@@ -30,9 +30,17 @@ def evalarg(exp, env):
                 except:
                     pass
 
-        print s[-1]
         return s[-1]
-    
+
+    elif exp['TYPE'] == 'str':
+        s=strstack()
+        exp = lexexp(exp['ARG'])
+        
+        for x in range(len(exp)):
+            for y in env:
+                exp[x]=exp[x].replace('#'+y+'#', env[y]) #Swap out variables
+        return ' '.join(exp)
+
     elif exp['TYPE'] == 'raw':
         return exp['ARG']
             
@@ -53,7 +61,10 @@ def run(script, env={}):
         c=script[i]['COMMAND']
         args=evalargs(script[i]['ARGS'], env)
 
-        if c == 'print':
+        if c == 'import':
+            env=run(open(args[0]).read(), env)
+
+        elif c == 'print':
             print(''.join([str(x) for x in args]), end='') #Accumulate args then print
 
         elif c == 'var':
@@ -70,6 +81,7 @@ def run(script, env={}):
             
         i+=1
 
+    return env
 
 if __name__ == '__main__':
     run(open(sys.argv[1]).read())
