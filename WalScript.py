@@ -1,4 +1,5 @@
 from __future__ import print_function
+import sys, getopt
 import lexer
 from stack import *
 
@@ -55,12 +56,17 @@ def run(script, env={}):
             print(''.join([str(x) for x in args]), end='') #Accumulate args then print
 
         elif c == 'var':
-            env[args[0]]=''.join([str(x) for x in args[1:]]) #Accumulate args 2+ into name arg 1
+            if args[1:]:
+                env[args[0]]=''.join([str(x) for x in args[1:]]) #Accumulate args 2+ into name arg 1
+            else:
+                env[args[0]]=None
 
         elif c == 'input':
-            env[args[0]] = raw_input()
+            env[args[0]] = raw_input() #Get raw input
+        
             
         i+=1
-    
 
-run('var}foo}5};print}{#foo#};return};')
+
+if __name__ == '__main__':
+    run(open(sys.argv[1]).read())
