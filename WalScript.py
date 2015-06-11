@@ -57,6 +57,9 @@ def run(script, env={}):
         elif c == 'var':
             env[args[0]]=''.join([str(x) for x in args[1:]]) #Accumulate args 2+ into name arg 1
 
+        elif c == 'input':
+            env[args[0]] = raw_input()
+            
         i+=1
     
 
