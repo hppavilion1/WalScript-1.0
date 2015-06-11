@@ -1,13 +1,17 @@
-import lexer, args
+from __future__ import print_function
+import lexer
 from stack import *
 
 def lexexp(s):
     return s.split()
 
-def evalarg(exp):
+def evalarg(exp, env={}):
     s = stack()
-    if exp[1] == 'exp':
-        exp = lexexp(exp)
+    if exp['TYPE'] == 'exp':
+        exp = lexexp(exp)['ARG']
+        for x in env:
+            exp=exp.replace('#'+x+'#', env[x])
+            
         for x in exp:
             if x == '+':
                 s.add()
@@ -23,8 +27,8 @@ def evalarg(exp):
                 except:
                     pass
             
-    elif exp[1] == 'raw':
-        return exp
+    elif exp['TYPE'] == 'raw':
+        return exp['ARG']
             
     
 def evalargs(args):
@@ -34,8 +38,22 @@ def evalargs(args):
     return r
 
 def run(script, env={}):
-    script = lex.lex(script)
+    script = lexer.lex(script)
+    i=0
 
-    c=script['COMMAND']
-    args=args.evalargs(script['ARGS'])
+    c=''
+
+    while c != 'RETURN':
+        c=script[i]['COMMAND']
+        args=evalargs(script[i]['ARGS'], env)
+        
+        if c == 'print':
+            print(''.join(args), end='')
+
+        elif c == 'var':
+            env[args[0]]= ''.join(args[1:])
+
+        i+=1
     
+
+run('print}5};RETURN};')
