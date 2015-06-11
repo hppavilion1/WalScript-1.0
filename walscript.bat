@@ -1,1 +1,2 @@
-python WalScript.py %2
+@echo off
+python WalScript.py %1

@@ -1,5 +1,5 @@
 from __future__ import print_function
-import sys, getopt
+import sys
 import lexer
 from stack import *
 
@@ -29,7 +29,8 @@ def evalarg(exp, env):
                     s.push(float(x))
                 except:
                     pass
-        
+
+        print s[-1]
         return s[-1]
     
     elif exp['TYPE'] == 'raw':
