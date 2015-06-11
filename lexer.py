@@ -13,9 +13,15 @@ def lex(script):
             if com[x][0]=='{':
                 com[x]={'ARG':com[x],
                         'TYPE':'exp'}
+
             elif com[x][0]=='[':
                 com[x]={'ARG':com[x],
                         'TYPE':'bool'}
+
+            elif com[x][0] == '`':
+                com[x]={'ARG':com[x],
+                        'TYPE':'str'}
+
             else:
                 com[x]={'ARG':encode(com[x]),
                         'TYPE':'raw'}
