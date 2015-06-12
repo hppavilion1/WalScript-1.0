@@ -57,7 +57,7 @@ def run(script, env={}):
 
     c=''
 
-    while c != 'return':
+    while c not in ['return', 'debug']:
         c=script[i]['COMMAND']
         args=evalargs(script[i]['ARGS'], env)
 
