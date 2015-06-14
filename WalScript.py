@@ -52,11 +52,39 @@ def evalargs(args, env):
         r.append(evalarg(x, env))
     return r
 
+class functionconstruct:
+    def _import(self, env, *args):
+        if isfile(args[0]):
+            if args[0].endswith('.wal'):
+                env=run(open(args[0]).read(), env)
+                return True
+            elif args[0].endswith('.py'):
+                return True
+            
+            else:
+                return False
+
+    def _print(self, env, *args):
+        print(''.join([str(x) for x in args]), end='') #Accumulate args then print
+
+    def _var(self, env, *args):
+        if args[1:]:
+            env[args[0]]=''.join([str(x) for x in args[1:]]) #Accumulate args 2+ into name arg 1
+        else:
+            env[args[0]]=None
+
+    def _input(self, env, *args):
+        return raw_input() #Get raw input
+
+    def _skip(self, env, *args):
+        return None
+
+evaluator = functionconstruct()
+
 def run(script, env={}):
     script = lexer.lex(script)
     i=0
-
-    c=''
+    c=None
 
     while c not in ['return', 'debug']:
         o=None
@@ -64,28 +92,9 @@ def run(script, env={}):
         c=script[i]['COMMAND']
         args=evalargs(script[i]['ARGS'], env)
 
-        if c == 'import':
-            if isfile(args[0]):
-                env=run(open(args[0]).read(), env)
-                o = True
-            else:
-                o = False
-
-        elif c == 'print':
-            print(''.join([str(x) for x in args]), end='') #Accumulate args then print
-
-        elif c == 'var':
-            if args[1:]:
-                env[args[0]]=''.join([str(x) for x in args[1:]]) #Accumulate args 2+ into name arg 1
-            else:
-                env[args[0]]=None
-
-        elif c == 'input':
-            o=raw_input() #Get raw input
-
-        elif c == 'skip':
-            pass
-
+        if '_'+c in dir(evaluator):
+            o=getattr(evaluator, '_'+c)(env, *args)
+            
         elif c == 'return':
             pass
         
