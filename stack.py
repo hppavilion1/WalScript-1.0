@@ -69,4 +69,5 @@ class expstack(stack):
 
 
 def strstack(stack):
-    pass
+    def __init__(self, *args, **kwargs):
+        stack.__init__(self, *args, **kwargs)

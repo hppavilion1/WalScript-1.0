@@ -7,6 +7,12 @@ def lex(script):
     script=script.split(';')[:-1]
     
     for x in range(len(script)):
+        if len(script[x].split('='))>1:
+            var=script[x].split('=')[0].strip()
+            script[x]=''.join(script[x].split('=')[1:])
+        else:
+            var=None
+        
         com=script[x].split('}')[:-1]
         
         for x in range(len(com))[1:]:
@@ -26,7 +32,8 @@ def lex(script):
                 com[x]={'ARG':encode(com[x]),
                         'TYPE':'raw'}
                 
-        r.append({'COMMAND':com[0].strip(),
+        r.append({'VAR':var,
+                  'COMMAND':com[0].strip(),
                   'ARGS':com[1:]})
 
     return r

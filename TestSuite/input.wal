@@ -1,5 +1,5 @@
 var}name}0};
 print}Hi, world!\nName?: };
-input}name};
+name=input};
 print}Hello, }`#name#}!};
 return};

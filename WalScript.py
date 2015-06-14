@@ -1,4 +1,5 @@
 from __future__ import print_function
+import os.path #For isfile
 import sys
 import lexer
 from stack import *
@@ -33,7 +34,7 @@ def evalarg(exp, env):
         return s[-1]
 
     elif exp['TYPE'] == 'str':
-        s=strstack()
+        s=strstack(None)
         exp = lexexp(exp['ARG'])
         
         for x in range(len(exp)):
@@ -58,11 +59,17 @@ def run(script, env={}):
     c=''
 
     while c not in ['return', 'debug']:
+        o=None
+        v=script[i]['VAR']
         c=script[i]['COMMAND']
         args=evalargs(script[i]['ARGS'], env)
 
         if c == 'import':
-            env=run(open(args[0]).read(), env)
+            if isfile(args[0]):
+                env=run(open(args[0]).read(), env)
+                o = True
+            else:
+                o = False
 
         elif c == 'print':
             print(''.join([str(x) for x in args]), end='') #Accumulate args then print
@@ -74,11 +81,19 @@ def run(script, env={}):
                 env[args[0]]=None
 
         elif c == 'input':
-            env[args[0]] = raw_input() #Get raw input
+            o=raw_input() #Get raw input
 
         elif c == 'skip':
             pass
-            
+
+        elif c == 'return':
+            pass
+        
+        else:
+            raise ValueError('Invalid Command '+c)
+
+        if v:
+            env[v]=o
         i+=1
 
     return env
