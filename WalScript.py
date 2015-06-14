@@ -9,7 +9,7 @@ def lexexp(s):
     return s.split()
 
 def evalarg(exp, env):
-    if exp['TYPE'] == 'exp':
+    if exp['TYPE'] == 'exp': #Float expression arguments
         s = expstack()
         exp = lexexp(exp['ARG'])
 
@@ -33,7 +33,7 @@ def evalarg(exp, env):
 
         return s[-1]
 
-    elif exp['TYPE'] == 'str':
+    elif exp['TYPE'] == 'str': #String expression arguments
         s=strstack(None)
         exp = lexexp(exp['ARG'])
         
@@ -42,7 +42,7 @@ def evalarg(exp, env):
                 exp[x]=exp[x].replace('#'+y+'#', env[y]) #Swap out variables
         return ' '.join(exp)
 
-    elif exp['TYPE'] == 'raw':
+    elif exp['TYPE'] == 'raw': #Raw expression Arguments
         return exp['ARG']
             
     
@@ -52,31 +52,32 @@ def evalargs(args, env):
         r.append(evalarg(x, env))
     return r
 
-class functionconstruct:
-    def _import(self, env, *args):
-        if isfile(args[0]):
+class functionconstruct: #Basic functions. Not if-then constructs or anything.
+    def _import(self, env, *args): #Import a module
+        if os.path.isfile(args[0]):
             if args[0].endswith('.wal'):
                 env=run(open(args[0]).read(), env)
                 return True
             elif args[0].endswith('.py'):
+                exec(open(args[0]).read()) #Build new functions from a file
                 return True
             
             else:
                 return False
 
-    def _print(self, env, *args):
+    def _print(self, env, *args): #print command
         print(''.join([str(x) for x in args]), end='') #Accumulate args then print
 
-    def _var(self, env, *args):
+    def _var(self, env, *args): #variables
         if args[1:]:
             env[args[0]]=''.join([str(x) for x in args[1:]]) #Accumulate args 2+ into name arg 1
         else:
             env[args[0]]=None
 
-    def _input(self, env, *args):
-        return raw_input() #Get raw input
+    def _input(self, env, *args): #Get user input
+        return raw_input()
 
-    def _skip(self, env, *args):
+    def _skip(self, env, *args): #donothing
         return None
 
 evaluator = functionconstruct()
@@ -94,8 +95,11 @@ def run(script, env={}):
 
         if '_'+c in dir(evaluator):
             o=getattr(evaluator, '_'+c)(env, *args)
-            
+
         elif c == 'return':
+            pass
+
+        elif c == '':
             pass
         
         else:
