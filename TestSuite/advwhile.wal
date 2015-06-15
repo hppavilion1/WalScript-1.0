@@ -1,0 +1,13 @@
+var}loop}1};
+while}{#loop#};
+	var}mloop}0};
+	print}Looping\nMeta-loop?: };
+	mloop=input};
+	while}{#mloop#};
+		print}Meta-Looping\nContinue?: };
+		mloop=input};
+	endwhile};
+	print}Continue looping?: };
+	loop=input};
+endwhile};
+return};

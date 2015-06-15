@@ -1,0 +1,11 @@
+var}do};
+var}do2};
+do=input};
+do2=input};
+if}do};
+	print}Did};
+	if}do2};
+		print}Did2};
+	endif};
+endif};
+return};

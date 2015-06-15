@@ -1,0 +1,6 @@
+var}loop}1};
+while}{#loop#};
+print}looping\nContinue?: };
+loop=input};
+endwhile};
+return};
