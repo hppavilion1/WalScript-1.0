@@ -1,2 +1,3 @@
+import}io.wal};
 print}Hello, world!\n};
 return};

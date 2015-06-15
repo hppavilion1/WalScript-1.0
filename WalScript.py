@@ -4,6 +4,8 @@ import sys
 import lexer
 from stack import *
 
+libpath = open('libpath.txt').read()
+
 def lexexp(s):
     s=s[1:]
     return s.split()
@@ -58,34 +60,23 @@ def evalargs(args, env):
 
 class functionconstruct: #Basic functions. Not if-then constructs or anything.
     def _import(self, env, *args): #Import a module
-        if os.path.isfile(args[0]):
-            if args[0].endswith('.wal'):
-                env=run(open(args[0]).read(), env)
-                return (True, env)
+        if os.path.isfile(libpath+args[0]):
+            if args[0].endswith('.py'):
+                exec(open(libpath+args[0]).read()) #Build new functions from a file
+                return((True, env))
             
-            elif args[0].endswith('.py'):
-                exec(open(args[0]).read()) #Build new functions from a file
-                return (True, env)
+            elif args[0].endswith('.wal'):
+                env=run(open(libpath+args[0]).read(), env)
+                return((True, env))
+
+            elif os.path.isfile(args[0]+'.wal'):
+                env=run(open(libpath+args[0]+'.wal').read(), env)
+                return((True, env))
             
             else:
-                return (False, env)
-
-    def _print(self, env, *args): #print command
-        print(''.join([str(x) for x in args]), end='') #Accumulate args then print
-        return (None, env)
-
-    def _var(self, env, *args): #variables
-        if args[1:]:
-            env[args[0]]=''.join([str(x) for x in args[1:]]) #Accumulate args 2+ into name arg 1
+                return((False, env))
         else:
-            env[args[0]]=None
-        return (None, env)
-
-    def _input(self, env, *args): #Get user input
-        return (raw_input(), env)
-
-    def _skip(self, env, *args): #donothing
-        return (None, env)
+            return((False, env))
 
 evaluator = functionconstruct()
 
@@ -95,7 +86,7 @@ def run(script, env={'__loops__':[]}):
     c=None
 
     while c not in ['return', 'debug']:
-        o=None
+        o=(None, env)
         v=script[i]['VAR']
         c=script[i]['COMMAND']
         args=evalargs(script[i]['ARGS'], env)
@@ -147,7 +138,7 @@ def run(script, env={'__loops__':[]}):
         
         else:
             raise ValueError('Invalid Command '+c)
-
+        
         env=o[1]
         if v:
             env[v]=o[0]
@@ -156,4 +147,12 @@ def run(script, env={'__loops__':[]}):
     return env
 
 if __name__ == '__main__':
-    run(open(sys.argv[1]).read())
+    env = {}
+    if os.path.isfile(sys.argv[1]):
+        env = run(open(sys.argv[1]).read())
+    if '-i' in sys.argv or '--interactive' in sys.argv:
+        while 1:
+            env=run(raw_input('WalScript>'), env)
+
+    elif '-c' in sys.argv or '--compile' in sys.argv:
+        print('Feature not yet supported')

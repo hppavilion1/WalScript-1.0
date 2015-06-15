@@ -1,3 +1,5 @@
-import}C:\Users\Nathan\Desktop\Programming\WalrusOS\WalScript 1.0\lib\math.wal};
+import}io};
+import}math.wal};
+
 print}{#pi#};
 return};

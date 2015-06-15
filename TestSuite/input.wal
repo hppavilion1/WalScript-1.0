@@ -1,3 +1,6 @@
+import}io};
+import}var};
+
 var}name};
 print}Hello, world!\nName?: };
 name=input};
