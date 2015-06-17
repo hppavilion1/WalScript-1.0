@@ -1,2 +1,3 @@
-import}_wsvar.py};
+import}data/_wsvar.py};
+import}data/_wsdelete.py};
 return};

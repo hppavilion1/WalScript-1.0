@@ -7,8 +7,8 @@ from stack import *
 libpath = open('libpath.txt').read()
 
 def lexexp(s):
-    s=s[1:]
-    return s.split()
+    s=s[2:]
+    return s.strip().split()
 
 def evalarg(exp, env):
     if exp['TYPE'] == 'exp': #Float expression arguments
@@ -17,7 +17,7 @@ def evalarg(exp, env):
 
         for x in exp:
             for y in env:
-                if isinstance(env[y], str):
+                if not y.startswith('__'):
                     if env[y]:
                         print(env[y])
                         x=x.replace('#'+y+'#', env[y]) #Swap out variables
@@ -80,12 +80,12 @@ class functionconstruct: #Basic functions. Not if-then constructs or anything.
 
 evaluator = functionconstruct()
 
-def run(script, env={'__loops__':[]}):
+def run(script, env={'__loops__':[], '__functions__':{}}, lex=True):
     script = lexer.lex(script)
     i=0
     c=None
 
-    while c not in ['return', 'debug']:
+    while c not in ['return', 'debug', 'endfunc']:
         o=(None, env)
         v=script[i]['VAR']
         c=script[i]['COMMAND']
@@ -133,8 +133,21 @@ def run(script, env={'__loops__':[]}):
         elif c == 'endwhile':
             i=env['__loops__'].pop()-1
 
-        #elif c == '':
-        #    pass
+        elif c == 'func':
+            foundend=0
+            i2=i
+            while not foundend:
+                i2+=1
+                if script[i2]['COMMAND'] == 'func':
+                    foundend-=1
+                elif script[i2]['COMMAND'] == 'endfunc':
+                    foundend+=1
+
+            functions[script[i]['COMMAND']] = {'ARGS':args, 'SCRIPT':script[i:i2]}
+
+
+        elif c == '':
+            pass
         
         else:
             raise ValueError('Invalid Command '+c)
@@ -144,15 +157,4 @@ def run(script, env={'__loops__':[]}):
             env[v]=o[0]
         i+=1
 
-    return env
-
-if __name__ == '__main__':
-    env = {}
-    if os.path.isfile(sys.argv[1]):
-        env = run(open(sys.argv[1]).read())
-    if '-i' in sys.argv or '--interactive' in sys.argv:
-        while 1:
-            env=run(raw_input('WalScript>'), env)
-
-    elif '-c' in sys.argv or '--compile' in sys.argv:
-        print('Feature not yet supported')
+    return env            

@@ -2,11 +2,11 @@ import}io};
 import}var};
 
 var}loop}1};
-while}{#loop#};
+while}{e #loop#};
 	var}mloop}0};
 	print}Looping\nMeta-loop?: };
 	mloop=input};
-	while}{#mloop#};
+	while}{e #mloop#};
 		print}Meta-Looping\nContinue?: };
 		mloop=input};
 	endwhile};

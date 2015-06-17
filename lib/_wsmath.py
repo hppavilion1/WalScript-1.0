@@ -26,10 +26,26 @@ def atan(env, *args):
     import math
     return (math.atan(args[0]), env)
 
-self._sqrt=sqrt
-self._sin=sin
-self._cos=cos
-self._tan=tan
-self._asin=asin
-self._acos=acos
-self._atan=atan
+def log(env, *args):
+    import math
+    return (math.log(args[0], args[1]), env)
+
+def degrees(env, *args):
+    import math
+    return (math.degrees(args[0]), env)
+
+def radians(env, *args):
+    import math
+    return (math.radians(args[0]), env)
+
+
+self._sqrt    = sqrt
+self._sin     = sin
+self._cos     = cos
+self._tan     = tan
+self._asin    = asin
+self._acos    = acos
+self._atan    = atan
+self._log     = log
+self._degrees = degrees
+self._radians = radians
