@@ -1,5 +1,5 @@
-import}var};
+import}var.wal};
 
 var}foo}5};
-print}{#foo#};
+print}{e #foo#};
 return};

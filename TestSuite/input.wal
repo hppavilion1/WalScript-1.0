@@ -1,8 +1,8 @@
-import}io};
-import}var};
+import}io.wal};
+import}var.wal};
 
 var}name};
 print}Hello, world!\nName?: };
 name=input};
-print}Hello, }`#name#}!};
+print}Hello, }{s #name#}!};
 return};

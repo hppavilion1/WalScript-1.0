@@ -1,9 +1,10 @@
-import}io};
-import}var};
+import}io.wal};
+import}var.wal};
 
 var}do};
+print}Do?: };
 do=input};
-if}{#do#};
+if}{e #do#};
 	print}Did};
 endif};
 return};

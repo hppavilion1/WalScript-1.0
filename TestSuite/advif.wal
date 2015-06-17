@@ -1,14 +1,19 @@
-import}io};
-import}var};
+import}io.wal};
+import}var.wal};
 
 var}do};
 var}do2};
+
+print}Do 1?: };
 do=input};
+
+print}Do 2?: };
 do2=input};
+
 if}{e #do#};
-	print}Did};
+	print}Did\n};
 	if}{e #do2#};
-		print}Did2};
+		print}Did2\n};
 	endif};
 endif};
 return};

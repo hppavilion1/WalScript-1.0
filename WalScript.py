@@ -19,7 +19,6 @@ def evalarg(exp, env):
             for y in env:
                 if not y.startswith('__'):
                     if env[y]:
-                        print(env[y])
                         x=x.replace('#'+y+'#', env[y]) #Swap out variables
                     else:
                         x=x.replace('#'+y+'#', '0')

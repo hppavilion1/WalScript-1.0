@@ -1,9 +1,9 @@
-import}io};
-import}var};
+import}io.wal};
+import}var.wal};
 
 var}loop}1};
-while}{#loop#};
-print}looping\nContinue?: };
-loop=input};
+while}{e #loop#};
+	print}Looping\nContinue?: };
+	loop=input};
 endwhile};
 return};

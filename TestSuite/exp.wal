@@ -1,4 +1,4 @@
-import}io};
+import}io.wal};
 
 print}{1 1 +};
 return};

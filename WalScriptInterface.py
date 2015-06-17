@@ -8,9 +8,18 @@ parser.add_argument('-i', '--interactive', action='store_true', dest='interactiv
 parser.add_argument('-c', '--compile',     action='store_true', dest='compile',      help='Compile the script to Python')
 parser.add_argument('-o', '--output',      action='store',      dest='outfile',      help='Set the output file for compilation')
 parser.add_argument('-v', '--version',     action='version', version='%(prog)s/0.7', help='Get the version')
+parser.add_argument('-t', '--test',        action='store_true', dest='testing',      help='Run the test suite')
 
 args = parser.parse_args(sys.argv[1:])
 args = vars(args)
+
+if args.get('testing'):
+    import os
+    
+    for f in os.listdir( 'TestSuite/'):
+        print(f)
+        WalScript.run(open('TestSuite/'+f).read())
+        raw_input()
 
 if not args.get('compile'):
     WalScript.run(open(args['file']).read())
